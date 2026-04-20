@@ -19,7 +19,7 @@ export default function BookPage() {
   const [step, setStep] = useState<Step>('service');
   const [services, setServices] = useState<Service[]>([]);
   const [selectedService, setSelectedService] = useState<Service | null>(null);
-  const [selectedDate, setSelectedDate] = useState<string>('');
+  const [selectedDate, setSelectedDate] = useState<string>(today);
   const [slots, setSlots] = useState<TimeSlot[]>([]);
   const [selectedSlot, setSelectedSlot] = useState<TimeSlot | null>(null);
   const [customerName, setCustomerName] = useState('');
@@ -52,7 +52,7 @@ export default function BookPage() {
 
   function handleServiceSelect(svc: Service) {
     setSelectedService(svc);
-    setSelectedDate('');
+    setSelectedDate(today);
     setSelectedSlot(null);
     setStep('datetime');
   }
