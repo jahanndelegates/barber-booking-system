@@ -78,11 +78,13 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
-  // Send confirmation email — fire and forget (don't block the response)
+  // Send confirmation email — await so Vercel doesn't kill the function early
   if (data.customer_email) {
-    sendBookingConfirmation(data).catch((err) =>
-      console.error('Failed to send confirmation email:', err)
-    );
+    try {
+      await sendBookingConfirmation(data);
+    } catch (err) {
+      console.error('Failed to send confirmation email:', err);
+    }
   }
 
   return NextResponse.json(data, { status: 201 });
