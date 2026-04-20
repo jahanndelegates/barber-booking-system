@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { formatDate, formatTime } from '@/lib/constants';
@@ -17,7 +17,7 @@ type AppointmentPreview = {
 
 type PageState = 'loading' | 'ready' | 'confirming' | 'cancelled' | 'already_cancelled' | 'error';
 
-export default function CancelPage() {
+function CancelPageInner() {
   const searchParams = useSearchParams();
   const token = searchParams.get('token');
 
@@ -172,6 +172,20 @@ export default function CancelPage() {
         )}
       </main>
     </div>
+  );
+}
+
+export default function CancelPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-jolly-cream flex items-center justify-center">
+          <p className="text-stone-400 font-medium">Loading…</p>
+        </div>
+      }
+    >
+      <CancelPageInner />
+    </Suspense>
   );
 }
 

@@ -1,13 +1,13 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
 import type { Appointment } from '@/types';
 import { formatDate, formatTime, formatPrice } from '@/lib/constants';
 
-export default function ConfirmationPage() {
+function ConfirmationPageInner() {
   const searchParams = useSearchParams();
   const id = searchParams.get('id');
   const [appointment, setAppointment] = useState<Appointment | null>(null);
@@ -98,6 +98,20 @@ export default function ConfirmationPage() {
         </Link>
       </main>
     </div>
+  );
+}
+
+export default function ConfirmationPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-jolly-cream flex items-center justify-center">
+          <p className="text-stone-400 font-bold">Loading…</p>
+        </div>
+      }
+    >
+      <ConfirmationPageInner />
+    </Suspense>
   );
 }
 
