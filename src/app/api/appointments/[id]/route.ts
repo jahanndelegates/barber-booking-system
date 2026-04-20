@@ -43,7 +43,8 @@ export async function PATCH(
       return NextResponse.json({ error: 'Appointment not found' }, { status: 404 });
     }
 
-    const duration = (appt.services as { duration: number } | null)?.duration;
+    const services = appt.services as unknown as { duration: number } | null;
+    const duration = services?.duration;
     if (!duration) {
       return NextResponse.json({ error: 'Service not found' }, { status: 404 });
     }
