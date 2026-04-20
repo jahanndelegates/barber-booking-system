@@ -214,7 +214,8 @@ export default function BookPage() {
               value={selectedDate}
               min={today}
               onChange={handleDateChange}
-              className="w-full p-3 rounded-2xl border-2 border-pink-100 bg-white focus:border-brand-400 focus:outline-none text-jolly-dark font-medium mb-6"
+              className="w-full p-3 rounded-2xl border-2 border-pink-100 bg-white focus:border-brand-400 focus:outline-none text-jolly-dark font-medium mb-6 appearance-none [color-scheme:light]"
+              style={{ colorScheme: 'light', color: '#1a1a1a' }}
             />
 
             {selectedDate && (

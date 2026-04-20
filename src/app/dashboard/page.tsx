@@ -31,7 +31,8 @@ export default function DashboardPage() {
             type="date"
             value={selectedDate}
             onChange={(e) => setSelectedDate(e.target.value)}
-            className="p-2 rounded-lg border border-stone-300 bg-white text-stone-900 focus:border-brand-500 focus:outline-none"
+            className="p-2 rounded-lg border border-stone-300 bg-white text-stone-900 focus:border-brand-500 focus:outline-none appearance-none [color-scheme:light]"
+            style={{ colorScheme: 'light', color: '#1a1a1a' }}
           />
         </div>
         <p className="text-stone-500 text-sm pt-4 sm:pt-5">{formatDate(selectedDate)}</p>
@@ -297,7 +298,8 @@ function RescheduleModal({
               value={newDate}
               min={today}
               onChange={(e) => setNewDate(e.target.value)}
-              className="w-full p-2.5 rounded-lg border border-stone-300 bg-white focus:border-brand-500 focus:outline-none"
+              className="w-full p-2.5 rounded-lg border border-stone-300 bg-white focus:border-brand-500 focus:outline-none appearance-none [color-scheme:light]"
+              style={{ colorScheme: 'light', color: '#1a1a1a' }}
             />
           </div>
 
