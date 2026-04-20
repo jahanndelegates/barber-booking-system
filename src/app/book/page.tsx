@@ -16,6 +16,8 @@ type Step = 'service' | 'datetime' | 'details' | 'confirm';
 export default function BookPage() {
   const router = useRouter();
 
+  const today = toDateString(new Date());
+
   const [step, setStep] = useState<Step>('service');
   const [services, setServices] = useState<Service[]>([]);
   const [selectedService, setSelectedService] = useState<Service | null>(null);
@@ -30,8 +32,6 @@ export default function BookPage() {
   const [loadingSlots, setLoadingSlots] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
-
-  const today = toDateString(new Date());
 
   useEffect(() => {
     fetch('/api/services')
