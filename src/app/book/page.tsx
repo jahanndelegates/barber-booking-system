@@ -44,11 +44,17 @@ export default function BookPage() {
     if (!selectedDate || !selectedService) return;
     setLoadingSlots(true);
     setSelectedSlot(null);
-    fetch(`/api/slots?date=${selectedDate}&duration=${selectedService.duration}`)
+    // Pass current local time when querying today so past slots are filtered out
+    const isToday = selectedDate === today;
+    const nowStr = isToday
+      ? `${String(new Date().getHours()).padStart(2, '0')}:${String(new Date().getMinutes()).padStart(2, '0')}`
+      : null;
+    const url = `/api/slots?date=${selectedDate}&duration=${selectedService.duration}${nowStr ? `&now=${nowStr}` : ''}`;
+    fetch(url)
       .then((r) => r.json())
       .then(setSlots)
       .finally(() => setLoadingSlots(false));
-  }, [selectedDate, selectedService]);
+  }, [selectedDate, selectedService, today]);
 
   function handleServiceSelect(svc: Service) {
     setSelectedService(svc);
@@ -96,7 +102,11 @@ export default function BookPage() {
       if (res.status === 409) {
         setSelectedSlot(null);
         setStep('datetime');
-        fetch(`/api/slots?date=${selectedDate}&duration=${selectedService.duration}`)
+        const isToday = selectedDate === today;
+        const nowStr = isToday
+          ? `${String(new Date().getHours()).padStart(2, '0')}:${String(new Date().getMinutes()).padStart(2, '0')}`
+          : null;
+        fetch(`/api/slots?date=${selectedDate}&duration=${selectedService.duration}${nowStr ? `&now=${nowStr}` : ''}`)
           .then((r) => r.json())
           .then(setSlots);
       }

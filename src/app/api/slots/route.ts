@@ -16,6 +16,7 @@ export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
   const date = searchParams.get('date');
   const durationParam = searchParams.get('duration');
+  const nowParam = searchParams.get('now'); // HH:MM local time from client (only sent for today)
 
   if (!date || !durationParam) {
     return NextResponse.json(
@@ -65,10 +66,15 @@ export async function GET(request: NextRequest) {
     return aStart < bEnd && aEnd > bStart;
   }
 
+  // If the client sent their current local time, slots before it are in the past
+  const nowMinutes = nowParam ? toMinutes(nowParam) : null;
+
   const slots: TimeSlot[] = possibleStarts.map((start) => {
     const end = addMinutes(start, duration);
     const slotStart = toMinutes(start);
     const slotEnd = toMinutes(end);
+
+    const inThePast = nowMinutes !== null && slotStart <= nowMinutes;
 
     const blockedByAppt = appointments?.some((a) =>
       overlaps(slotStart, slotEnd, toMinutes(a.start_time), toMinutes(a.end_time))
@@ -81,7 +87,7 @@ export async function GET(request: NextRequest) {
     return {
       start,
       end,
-      available: !blockedByAppt && !blockedByBlock,
+      available: !inThePast && !blockedByAppt && !blockedByBlock,
     };
   });
 
